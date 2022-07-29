@@ -3,6 +3,9 @@ package com.example.usuarioactivity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Usuarios implements Parcelable {
     private String Rol;
     private String Clave;
@@ -76,7 +79,18 @@ public class Usuarios implements Parcelable {
         return Email;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public float NivelSeguridad(String clave) {
+        float resp = 0;
+        Pattern p = Pattern.compile("\\W");
+        Matcher m = p.matcher(clave);
+        while (m.find()) resp++;
+
+        if (clave.length() >= 12 && resp >= 4) return 5;
+        else if (clave.length() >= 10 && resp >= 2) return 4;
+        else if (clave.length() >= 8 && resp >= 1) return 3;
+        else if (clave.length() >= 8) return 2;
+        else return 1;
+
     }
+
 }
